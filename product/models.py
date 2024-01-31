@@ -31,8 +31,11 @@ class Discount(models.Model):
     amount = models.IntegerField()
     min_amount = models.IntegerField()
     max_amount = models.IntegerField()
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title
@@ -51,7 +54,7 @@ class Product(models.Model):
     discount = models.ForeignKey(Discount,on_delete=models.CASCADE,related_name="disproducts",null=True, blank=True)
 
     class Meta:
-         ordering = ('updated',)
+         ordering = ('-updated',)
 
     def __str__(self) -> str:
         return self.name
