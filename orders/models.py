@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from product.models import Product
+from core.models import BaseModel
 
-class Coupon(models.Model):
+class Coupon(BaseModel):
 	code = models.CharField(max_length=30, unique=True)
 	valid_from = models.DateTimeField()
 	valid_to = models.DateTimeField()
@@ -13,15 +14,13 @@ class Coupon(models.Model):
 	def __str__(self):
 		return self.code
 
-class Order(models.Model):
+class Order(BaseModel):
 	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
 	is_paid = models.BooleanField(default=False)
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
 	discount = models.IntegerField(blank=True, null=True, default=None)
 
 	class Meta:
-		ordering = ('-updated',)
+		ordering = ('-updated_at',)
 
 	def __str__(self):
 		return f'{self.user} - {str(self.id)}'
@@ -32,7 +31,7 @@ class Order(models.Model):
 			discount_price = (self.discount / 100) * total
 			return int(total - discount_price)
 		return total
-class OrderItem(models.Model):
+class OrderItem(BaseModel):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	price = models.IntegerField()
@@ -43,3 +42,15 @@ class OrderItem(models.Model):
 
 	def get_cost(self):
 		return self.price * self.quantity
+
+class Address(BaseModel):
+     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='uaddress')
+     state = models.CharField(max_length=100)
+     street = models.CharField(max_length=255)
+     city = models.CharField(max_length=100)
+     zip_code = models.CharField(max_length=20)
+     plate = models.IntegerField()
+     unit = models.IntegerField()
+     
+     def __str__(self):
+        return f"{self.street}, {self.city}, {self.state} {self.zip_code}"
