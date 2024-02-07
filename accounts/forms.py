@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from .models import User
 from django.core.exceptions import ValidationError
@@ -23,3 +24,18 @@ class UserChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('phone_number','email','full_name','password','last_login')
+
+class UserRegisterForm(forms.Form):
+    phone = forms.CharField(max_length=11)
+    full_name = forms.CharField(label='full name')
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        user = User.objects.filter(phone_number=phone).exists()
+        if user:
+            raise ValidationError('this phone number already exist')
+        return phone
+    
+class VerifyCodeForm(forms.Form):
+    code = forms.IntegerField()

@@ -1,0 +1,34 @@
+{% extends 'base-account.html' %}
+{% block account %}
+        <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+            <div class="account-box">
+                <a href="index.html" class="logo-account"><img src="assets/images/logo-login.png" alt="logo"></a>
+                <span class="account-head-line">ثبت نام در دیجی کالا</span>
+                <div class="content-account">
+                    {% comment %} <div class="massege-light">ثبت نام تنها با شماره تلفن همراه امکان پذیر است.</div> {% endcomment %}
+                    <form action method="post" id="register" novalidate>
+                        {% csrf_token %}
+                        <label for="email-phone">شماره موبایل خود را وارد کنید</label>
+                        {{form.phone}}
+                        <label for="full-name">نام و نام خانوادگی خود را وارد کنید</label>
+                        {{form.full_name}}
+                        <label for="password">رمز عبور</label>
+                        {{form.password}}
+    
+                        <div class="parent-btn">
+                            <button type="submit" class="dk-btn dk-btn-info">
+                                ثبت نام به دیجی کالا
+                                <i class="mdi mdi-account-plus-outline sign-in"></i>
+                            </button>
+                        </div>
+                        <div class="form-auth-row"></div>
+                    </form>
+                </div>
+
+                <div class="account-footer">
+                    <span>قبلا در دیجی‌کالا ثبت‌نام کرده‌اید؟</span>
+                    <a href="login.html" class="btn-link-register">وارد شویــد</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}
