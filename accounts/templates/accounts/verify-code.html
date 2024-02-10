@@ -5,8 +5,19 @@
                 <a href="index.html" class="logo-account"><img src="assets/images/logo-login.png" alt="logo"></a>
                 <span class="account-head-line">ثبت نام در دیجی کالا</span>
                 <div class="content-account">
-                    {% comment %} <div class="massege-light">ثبت نام تنها با شماره تلفن همراه امکان پذیر است.</div> {% endcomment %}
-                    <form action method="post" id="register">
+                    {% if form.password.errors or  messages %}
+                    <div class="massege-light">
+                        <ul>                    
+                                {% for error in form.password.errors %}
+                                   <li>{{ error }}</li>
+                                {% endfor %}
+
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}                    <form action method="post" id="register">
                         {% csrf_token %}
                         <label for="code-phone">کد تایید</label>
                         {{form.code}}

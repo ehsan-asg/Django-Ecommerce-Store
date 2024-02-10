@@ -35,6 +35,10 @@ class UserRegisterForm(forms.Form):
         user = User.objects.filter(phone_number=phone).exists()
         if user:
             raise ValidationError('this phone number already exist')
+        elif not phone.isdigit():
+            raise ValidationError("Phone number can only contains digits")
+        elif len(phone) !=11:
+            raise ValidationError('Length of phone number must be 11 digits')
         return phone
     
 class VerifyCodeForm(forms.Form):

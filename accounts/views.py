@@ -2,21 +2,21 @@ from django.shortcuts import render,redirect
 from django.views import View
 from .forms import UserRegisterForm,VerifyCodeForm
 import random
-from utils import send_top_code
+from utils import send_otp_code
 from .models import OtpCode,User
 from django.contrib import messages
 
 class RegisterUserView(View):
-    class_form = UserRegisterForm
-
+    form_class = UserRegisterForm
+    template_class = 'accounts/register.html'
     def get(self,request):
-        form = self.class_form
-        return render(request,'accounts/register.html',{'form':form})
+        form = self.form_class 
+        return render(request,self.template_class,{'form':form})
     def post(self,request):
-        form = self.class_form(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             random_code = random.randint(1000,9999)
-            send_top_code(form.cleaned_data['phone'],random_code)
+            send_otp_code(form.cleaned_data['phone'],random_code)
             OtpCode.objects.create(phone_number = form.cleaned_data['phone'],code=random_code)
             request.session['user_register_info'] = {
                 'phone_number':form.cleaned_data['phone'],
@@ -25,8 +25,7 @@ class RegisterUserView(View):
             }
             messages.success(request,'we send you a code','success')
             return redirect('accounts:accounts-verify')
-        else:
-            redirect('accounts:accounts-register')
+        return render(request,self.template_class,{'form':form})
         
             
 class UserRegisterVerifyCodeView(View):
