@@ -23,7 +23,7 @@ class RegisterUserView(View):
                 'full_name':form.cleaned_data['full_name'],
                 'password':form.cleaned_data['password']
             }
-            messages.success(request,'we send you a code','success')
+            messages.success(request,f"برای شماره همراه{form.cleaned_data['phone']} کد تایید ارسال گردید",'success')
             return redirect('accounts:accounts-verify')
         return render(request,self.template_class,{'form':form})
         

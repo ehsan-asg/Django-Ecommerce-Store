@@ -5,31 +5,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png"
-        href="https://www.digikala.com/mag/wp-content/themes/digikalamag/assets/common/img/ms-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="144x144"
-        href="https://www.digikala.com/mag/wp-content/themes/digikalamag/assets/common/img/ms-icon-144x144.png">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#f7858d">
+    <meta name="msapplication-navbutton-color" content="#f7858d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
     <title>ثبت نام در دیجی کالا</title>
-    <!--    font-->
-    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/materialdesignicons.css' %}">
-    <link rel="stylesheet" href="{% static 'css/materialdesignicons.css.map' %}">
-    <!--    font-->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'css/vendor/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/materialdesignicons.min.css' %}">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.min.css' %}">
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap-slider.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery.horizontalmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/nouislider.min.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors/default.css' %}" id="colorswitch">
 </head>
 
 <body>
-    <div id="main" style="height: 100vh;">
+    <div class="wrapper">
+        <!-- Start main-content -->
+        <main class="main-content dt-sl mt-4 mb-3">
     {% block account %}
 
     {% endblock %}
 
-
+        </main>
     </div>
+    <script src="{% static 'js/vendor/jquery-3.4.1.min.js'%}"></script>
+    <script src="{% static 'js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <!-- Plugins -->
+    <script src="{% static 'js/vendor/bootstrap-slider.min.js' %}"></script>
+    <script src="{% static 'js/vendor/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/vendor/owl.carousel2.thumbs.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'js/vendor/nouislider.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.horizontalmenu.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'js/vendor/countdown.min.js' %}"></script>
+    <script src="{% static 'js/vendor/wNumb.js' %}"></script>
+    <script src="{% static 'js/vendor/ResizeSensor.min.js' %}"></script>
+    <script src="{% static 'js/vendor/theia-sticky-sidebar.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
 
-            <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-            <script src="{% static 'js/bootstrap.js' %}"></script>
-        </body>
-        
-        </html>
+</html>

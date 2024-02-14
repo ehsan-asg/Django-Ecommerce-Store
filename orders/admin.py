@@ -11,18 +11,14 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
 @admin.register(Order)
-class AddressAdmin(admin.ModelAdmin):
+class OrderAdmin(admin.ModelAdmin):
     list_display = ['user','created_at','updated_at']
     list_filter = ('created_at',)
     ordering = ('created_at',)
     inlines = (OrderItemInline,)
 
-
-
-
-
 @admin.register(Address)
-class OrderItemAdmin(admin.ModelAdmin):
+class AddressAdmin(admin.ModelAdmin):
     list_display = [get_user_model,"created_at","updated_at"]
     list_filter = ('created_at',"state","city")
     ordering = ('created_at',)

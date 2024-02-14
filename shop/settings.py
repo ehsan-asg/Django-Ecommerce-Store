@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'orders.apps.OrdersConfig',
     'product.apps.ProductConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'rest_framework',
+    'colorfield'
 
 ]
 
@@ -128,9 +130,21 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# config django rest framework
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+}

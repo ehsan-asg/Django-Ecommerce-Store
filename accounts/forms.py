@@ -26,9 +26,9 @@ class UserChangeForm(forms.ModelForm):
         fields = ('phone_number','email','full_name','password','last_login')
 
 class UserRegisterForm(forms.Form):
-    phone = forms.CharField(max_length=11)
-    full_name = forms.CharField(label='full name')
-    password = forms.CharField(widget=forms.PasswordInput)
+    phone = forms.CharField(max_length=11,widget=forms.TextInput(attrs={'class': "input-ui pr-2",'placeholder': 'شماره موبایل خود را وارد نمایید'}))
+    full_name = forms.CharField(label='full name',widget=forms.TextInput(attrs={'class': "input-ui pr-2",'placeholder': 'نام و نام خانوادگی خود را وارد نمایید'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': "input-ui pr-2",'placeholder': 'رمز عبور خود را وارد نمایید'}))
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
