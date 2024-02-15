@@ -1,16 +1,20 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,get_list_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from django.views import View
 from .models import Product,Category
 from .serializer import ProductSerializers,CategorySerializers
-from rest_framework import status,pagination
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 
 class HomeView(View):
     def get(self,request):
         return render(request,"landing-page/index.html")
 
+class CategoryView(View):
+      def get(self,request,category_slug):
+          return render(request,"shop/product-category.html")
 
 class HomeProductView(APIView):
     def get(self, request):
@@ -33,3 +37,13 @@ class HomeProductView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+class CategoryApiView(APIView,PageNumberPagination):
+      page_size = 3
+      def get(self,request,category_slug):
+           product_category = get_object_or_404(Category, slug=category_slug)
+           products = product_category.products.all()
+           pagination_products = self.paginate_queryset(products,request,view=self)
+           ser_data = ProductSerializers(pagination_products,many=True).data
+           count = products.count()
+           return Response({'count': count, 'results': ser_data},status=status.HTTP_200_OK)
