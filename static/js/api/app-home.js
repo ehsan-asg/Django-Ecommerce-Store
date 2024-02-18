@@ -1,6 +1,11 @@
 const carousel_laptop = document.getElementById('laptop-carousel')
 const carousel_mobile = document.getElementById('mobile-carousel')
 const carousel_mouse = document.getElementById('mouse-carousel')
+function get_url_home(){
+       main_url = window.location.protocol
+       main_url += "//"+window.location.host
+       return main_url
+}
 async function fetchData() {
   try {
       const response = await fetch('http://127.0.0.1:8000/api/HomeProductView/');
@@ -20,12 +25,12 @@ async function fetchData() {
           const html = `
               <div class="item">
                   <div class="product-card">
-                      <a class="product-thumb" href="shop-single.html">
+                      <a class="product-thumb" href="${get_url_home()+"/product"+"/"+data_input['slug']}">
                           <img src="${data_input['image']}" alt="Product Thumbnail">
                       </a>
                       <div class="product-card-body">
                           <h5 class="product-title">
-                              <a href="shop-single.html">${data_input['name']}</a>
+                              <a href="${get_url_home()+"/product"+"/"+data_input['slug']}">${data_input['name']}</a>
                           </h5>
                           <span class="product-price">${data_input['feature'][0]['price']} تومان</span>
                       </div>
@@ -36,37 +41,37 @@ async function fetchData() {
       for (let x in mobile) {
         const data_input = mobile[x];
         const html = `
-            <div class="item">
-                <div class="product-card">
-                    <a class="product-thumb" href="shop-single.html">
-                        <img src="${data_input['image']}" alt="Product Thumbnail">
-                    </a>
-                    <div class="product-card-body">
-                        <h5 class="product-title">
-                            <a href="shop-single.html">${data_input['name']}</a>
-                        </h5>
-                        <span class="product-price">${data_input['feature'][0]['price']} تومان</span>
-                    </div>
+        <div class="item">
+            <div class="product-card">
+                <a class="product-thumb" href="${get_url_home()+"/product"+"/"+data_input['slug']}">
+                    <img src="${data_input['image']}" alt="Product Thumbnail">
+                </a>
+                <div class="product-card-body">
+                    <h5 class="product-title">
+                        <a href="${get_url_home()+"/product"+"/"+data_input['slug']}">${data_input['name']}</a>
+                    </h5>
+                    <span class="product-price">${data_input['feature'][0]['price']} تومان</span>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
             carousel_mobile.insertAdjacentHTML('beforeend', html);
       }
       for (let x in mouse) {
         const data_input = mouse[x];
         const html = `
-            <div class="item">
-                <div class="product-card">
-                    <a class="product-thumb" href="shop-single.html">
-                        <img src="${data_input['image']}" alt="Product Thumbnail">
-                    </a>
-                    <div class="product-card-body">
-                        <h5 class="product-title">
-                            <a href="shop-single.html">${data_input['name']}</a>
-                        </h5>
-                        <span class="product-price">${data_input['feature'][0]['price']} تومان</span>
-                    </div>
+        <div class="item">
+            <div class="product-card">
+                <a class="product-thumb" href="${get_url_home()+"/product"+"/"+data_input['slug']}">
+                    <img src="${data_input['image']}" alt="Product Thumbnail">
+                </a>
+                <div class="product-card-body">
+                    <h5 class="product-title">
+                        <a href="${get_url_home()+"/product"+"/"+data_input['slug']}">${data_input['name']}</a>
+                    </h5>
+                    <span class="product-price">${data_input['feature'][0]['price']} تومان</span>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
             carousel_mouse.insertAdjacentHTML('beforeend', html);
       }
   } catch (error) {

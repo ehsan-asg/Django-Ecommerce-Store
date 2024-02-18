@@ -1,3 +1,5 @@
+from django.http import HttpRequest
+from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render,redirect
 from django.views import View
 from .forms import UserRegisterForm,VerifyCodeForm
@@ -5,29 +7,18 @@ import random
 from utils import send_otp_code
 from .models import OtpCode,User
 from django.contrib import messages
+from rest_framework.views import APIView
+from .serializers import UserRegisterSerializers
+from rest_framework import status
+from rest_framework.response import Response
 
-class RegisterUserView(View):
-    form_class = UserRegisterForm
-    template_class = 'accounts/register.html'
-    def get(self,request):
-        form = self.form_class 
-        return render(request,self.template_class,{'form':form})
+class UserRegister(APIView):
     def post(self,request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            random_code = random.randint(1000,9999)
-            send_otp_code(form.cleaned_data['phone'],random_code)
-            OtpCode.objects.create(phone_number = form.cleaned_data['phone'],code=random_code)
-            request.session['user_register_info'] = {
-                'phone_number':form.cleaned_data['phone'],
-                'full_name':form.cleaned_data['full_name'],
-                'password':form.cleaned_data['password']
-            }
-            messages.success(request,f"برای شماره همراه{form.cleaned_data['phone']} کد تایید ارسال گردید",'success')
-            return redirect('accounts:accounts-verify')
-        return render(request,self.template_class,{'form':form})
-        
-            
+        ser_data = UserRegisterSerializers(data=request.POST)
+        if ser_data.is_valid():
+            ser_data.create(ser_data.validated_data)
+            return Response(ser_data.data, status=status.HTTP_201_CREATED)
+        return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
 class UserRegisterVerifyCodeView(View):
     form_class = VerifyCodeForm
     def get(self,request):
@@ -48,3 +39,6 @@ class UserRegisterVerifyCodeView(View):
                 messages.error(request,"this code is wrong",'danger')
                 return redirect('accounts:accounts-verify')
         return redirect('accounts:accounts-register')
+class ProfileView(View):
+    def get(self,request):
+        return render(request,"accounts/profile.html")
