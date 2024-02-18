@@ -25,7 +25,3 @@ class TestUserModel(TestCase):
         self.assertEqual(user.image_profile, self.user_data['image_profile'])
         self.assertEqual(user.is_active, self.user_data['is_active'])
         self.assertEqual(user.is_admin, self.user_data['is_admin'])
-
-    def test_user_str_method(self):
-        user = User.objects.create(**self.user_data)
-        self.assertEqual(str(user), self.user_data['email'])

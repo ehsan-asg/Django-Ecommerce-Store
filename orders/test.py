@@ -16,7 +16,7 @@ class TestCouponModel(TestCase):
 class TestOrderModel(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password123')
+        self.user = User.objects.create_user(username='09391733775', password='password123')
 
     def test_order_str_method(self):
         order = Order.objects.create(user=self.user)

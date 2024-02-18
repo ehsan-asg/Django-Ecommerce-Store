@@ -2,6 +2,7 @@ from django.db import models
 from core.models import BaseModel
 from colorfield.fields import ColorField
 from django.utils.text import slugify
+from galleryfield.fields import GalleryField
 class Category(BaseModel):
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)

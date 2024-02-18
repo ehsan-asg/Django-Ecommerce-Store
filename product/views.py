@@ -7,6 +7,7 @@ from .serializer import ProductSerializers,CategorySerializers
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from django.utils.encoding import uri_to_iri
 
 class HomeView(View):
     def get(self,request):
@@ -15,6 +16,10 @@ class HomeView(View):
 class CategoryView(View):
       def get(self,request,category_slug):
           return render(request,"shop/product-category.html")
+
+class SingleProductView(View):
+     def get(self,request,product_slug):
+          return render(request,"shop/single-product.html")
 
 class HomeProductView(APIView):
     def get(self, request):
@@ -47,3 +52,8 @@ class CategoryApiView(APIView,PageNumberPagination):
            ser_data = ProductSerializers(pagination_products,many=True).data
            count = products.count()
            return Response({'count': count, 'results': ser_data},status=status.HTTP_200_OK)
+class SingleProductApiView(APIView):
+     def get(self,request,product_slug):
+          product_query = get_object_or_404(Product,slug=product_slug)
+          ser_data = ProductSerializers(product_query).data
+          return Response(ser_data,status=status.HTTP_200_OK)

@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'accounts.apps.AccountsConfig',
     'rest_framework',
-    'colorfield'
+    'colorfield',
+    'sorl.thumbnail',
+    'galleryfield'
 
 ]
 
@@ -147,4 +149,15 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+}
+
+JANGO_GALLERY_FIELD_CONFIG = {
+    # You may change the value to 4 or 5 to see the results
+    "bootstrap_version": 3,
+    # "assets": {
+    #     "bootstrap_css": "https://cdnjs.cloudflare.com/ajax/libs/"
+    #                      "twitter-bootstrap/3.4.1/css/bootstrap.min.css",
+    #     "bootstrap_js": "https://cdnjs.cloudflare.com/ajax/libs/"
+    #                     "twitter-bootstrap/3.4.1/css/bootstrap.min.js"
+    # }
 }
