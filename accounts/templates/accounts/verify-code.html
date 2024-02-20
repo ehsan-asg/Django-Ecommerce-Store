@@ -18,20 +18,18 @@
                         ویرایش شماره
                     </a>
                 </div>
-                <form action="#">
+                <form action="" method="post" novalidate>
                     <div class="form-row-title">
                         <h3>کد تایید را وارد کنید</h3>
                     </div>
-                    <div class="form-row">
-                        <div class="numbers-verify">
-                            <div class="lines-number-input">
-                                <input type="text" class="line-number" maxlength="1" autofocus="">
-                                <input type="text" class="line-number" maxlength="1">
-                                <input type="text" class="line-number" maxlength="1">
-                                <input type="text" class="line-number" maxlength="1">
-                                <input type="text" class="line-number" maxlength="1">
-                            </div>
-                        </div>
+                    <div class="form-row with-icon">
+                                <input type="text" class="input-ui pr-2 text-center" id="otp-code"  name="otp-code">
+                    </div>
+                    <div class="form-row mt-3">
+                        <button type="button" id="submit-code" class="btn-primary-cm btn-with-icon mx-auto w-100">
+                            <i class="mdi mdi-phone"></i>
+                            تایید کد
+                        </button>
                     </div>
                     <div class="form-row mt-3">
                         <div class="d-flex align-items-center">
