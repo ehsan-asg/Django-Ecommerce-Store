@@ -43,8 +43,3 @@ class UserRegisterForm(forms.Form):
     
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
-
-class LoginForm(forms.Form):
-    phone = forms.CharField(max_length=11,widget=forms.TextInput(attrs={'class': "input-ui pr-2",'placeholder': 'شماره موبایل خود را وارد نمایید'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': "input-ui pr-2",'placeholder': 'رمز عبور خود را وارد نمایید'}))
-
