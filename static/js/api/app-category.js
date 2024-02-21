@@ -6,6 +6,11 @@ function getCategorySlugFromURL() {
     return categorySlug;
 }
 
+function get_url_home(){
+    main_url = window.location.protocol
+    main_url += "//"+window.location.host
+    return main_url
+}
 
 const categorySlug = getCategorySlugFromURL();
 function fetchCategoryProducts(category_slug,page) {
@@ -30,12 +35,15 @@ function displayCategoryProducts(data){
     for (let x in data) {
         const html = `<div class="col-lg-3 col-md-4 col-sm-6 col-12 px-10 mb-1 px-res-0">
                                             <div class="product-card mb-2 mx-res-0">
-                                                <a class="product-thumb" href="shop-single.html">
+                                                <a class="product-thumb" href="${get_url_home()+"/product"+"/"+data[x]['slug']}">
                                                     <img src="${data[x]['image']}" alt="Product Thumbnail">
                                                 </a>
-                                                <div class="product-card-body">
+                                                <div class="product-card-body" style="
+                                                display: flex;
+                                                flex-direction: column;
+                                            ">
                                                     <h5 class="product-title">
-                                                        <a href="shop-single.html">${data[x]['name']}</a>
+                                                        <a href="${get_url_home()+"/product"+"/"+data[x]['slug']}">${data[x]['name']}</a>
                                                     </h5>
                                                     <span class="product-price">${data[x]['feature'][0]['price']} تومان</span>
                                                 </div>

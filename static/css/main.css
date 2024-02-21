@@ -3068,7 +3068,10 @@ ul.gallery-options li:hover .tooltip-option {
     padding-right: 37px;
 }
 
-input[type=radio]:checked+.ui-variant--check {
+/* input[type=radio]:checked+.ui-variant--check {
+    border-color: #f7858d;
+} */
+.active-label{
     border-color: #f7858d;
 }
 

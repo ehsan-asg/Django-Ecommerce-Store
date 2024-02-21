@@ -122,9 +122,9 @@ header.main-header .main-menu .list .list-item.mega-menu .sub-menu .sub-menu li 
     color: #f7858d;
 }
 
-input[type=radio]:checked+.ui-variant--check {
+/* input[type=radio]:checked+.ui-variant--check {
     border-color: #f7858d;
-}
+} */
 
 .accordion-product h5 button::before {
     background-color: #f7858d;
