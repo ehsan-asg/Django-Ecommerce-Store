@@ -1,17 +1,16 @@
 from rest_framework import serializers
 from .models import OtpCode
 from django.contrib.auth import password_validation
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+
 
 
 class UserRegisterSerializers(serializers.ModelSerializer):
     
 	class Meta:
-		model = User
+		model = get_user_model()
 		fields = ('phone_number', 'full_name', 'password')
-
-	def create(self, validated_data):
-		return User.objects.create_user(**validated_data)
 
 	def validate_username(self, value):
 		if value == 'admin':
@@ -28,5 +27,5 @@ class UserRegisterVerifyCode(serializers.ModelSerializer):
 		fields = ('code',)
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = User
+		model = get_user_model()
 		fields = "__all__"
