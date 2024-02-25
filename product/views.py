@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.views import View
 from .models import Product,Category
 from .serializer import ProductSerializers,CategorySerializers
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
@@ -57,3 +58,5 @@ class SingleProductApiView(APIView):
           product_query = get_object_or_404(Product,slug=product_slug)
           ser_data = ProductSerializers(product_query).data
           return Response(ser_data,status=status.HTTP_200_OK)
+class CartTemplateView(TemplateView):
+     template_name = "shop/cart.html"
