@@ -1,11 +1,14 @@
 from django.contrib import admin
 from .models import User,OtpCode
+from orders.models import Address
 from .forms import UserCreationForm,UserChangeForm
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 @admin.register(OtpCode)
 class OtpCodeAdmin(admin.ModelAdmin):
     list_display = ['phone_number','code','created_at']
+class UserAddressAdmin(admin.TabularInline):
+      model = Address
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -26,5 +29,7 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email', 'phone_number','full_name')
     ordering = ('created_at',)
     filter_horizontal = ('groups', 'user_permissions')
+    inlines = [UserAddressAdmin]
+
 
 admin.site.register(User, UserAdmin)
