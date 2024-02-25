@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import OtpCode
+from .models import OtpCode,User
 from django.contrib.auth import password_validation
 from django.contrib.auth import get_user_model
 
@@ -25,7 +25,8 @@ class UserRegisterVerifyCode(serializers.ModelSerializer):
 	class Meta:
 		model = OtpCode
 		fields = ('code',)
+
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = get_user_model()
+		model = User
 		fields = "__all__"

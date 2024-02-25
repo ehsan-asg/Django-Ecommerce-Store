@@ -6,10 +6,11 @@ urlpatterns = [
     path('register/',views.UserRegisterView.as_view(),name="accounts-register-template"),
     path('verify/',views.UserVerifyCodeView.as_view(),name="accounts-verify-template"),
     path('login/',views.UserLoginCodeView.as_view(),name="accounts-login-template"),
+    path('address/create/',views.UserAddAddress.as_view(),name="accounts-add-address"),
     #api 
     path('api/register/', views.UserRegister.as_view(), name='user-register'),
     path('api/verify-code/', views.UserVerifyCode.as_view(), name='user-verify-code'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 	path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/user',views.UserView.as_view(),name="accounts-user")
+    path('api/user',views.UserAllView.as_view(),name="accounts-user"),
 ]

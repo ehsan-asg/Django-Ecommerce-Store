@@ -10,6 +10,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from .serializer import UserRegisterSerializers,UserRegisterVerifyCode,UserSerializer
+from django.contrib.auth import get_user_model
+
+#Template
 
 class UserRegisterView(TemplateView):
     template_name = 'accounts/register.html'
@@ -20,6 +23,9 @@ class UserVerifyCodeView(TemplateView):
 class UserLoginCodeView(TemplateView):
     template_name = 'accounts/login.html'
 
+class UserAddAddress(TemplateView):
+     template_name = 'accounts/profile-add-address.html'
+#Api
 class UserRegister(APIView):
     
     def post(self,request):
@@ -47,8 +53,10 @@ class UserVerifyCode(APIView):
                 OtpCode.objects.filter(phone_number=user_session['phone_number']).delete()
                 return Response({'message': 'Thanks for signing up. Your account has been created.'}, status=status.HTTP_201_CREATED)
         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
-class UserView(APIView):
-    permission_classes = [IsAuthenticated,]
-    queryset = User.objects.all()
-    def get(self,request):
-        return Response({"mesage":"fddfd"},status=status.HTTP_200_OK)
+
+class UserAllView(APIView):
+    serializer_class = UserSerializer
+    def get(self, request):
+        serializer = self.serializer_class(User.objects.all(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
