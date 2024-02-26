@@ -17,7 +17,7 @@ button_code.addEventListener("click",function(){
         if (Http.readyState == 4) {
             if (Http.status == 201) {
                 console.log("Successful registration");
-                window.location.replace(get_url_home()+"/accounts/regiter");
+                window.location.replace(get_url_home()+"/accounts/address/create/");
             } else {
                 console.error("Failed to register:", Http.responseText);
             }

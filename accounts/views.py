@@ -4,16 +4,18 @@ import random
 from rest_framework.permissions import IsAuthenticated
 from utils import send_otp_code
 from .models import OtpCode,User
-from django.contrib import messages
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from .serializer import UserRegisterSerializers,UserRegisterVerifyCode,UserSerializer
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 #Template
-
+class UserAddAddress(View):
+    template_name = 'accounts/register.html'
 class UserRegisterView(TemplateView):
     template_name = 'accounts/register.html'
 
@@ -23,8 +25,9 @@ class UserVerifyCodeView(TemplateView):
 class UserLoginCodeView(TemplateView):
     template_name = 'accounts/login.html'
 
-class UserAddAddress(TemplateView):
-     template_name = 'accounts/profile-add-address.html'
+class UserProfileTemplateView(TemplateView):
+    template_name = 'accounts/profile.html'
+
 #Api
 class UserRegister(APIView):
     

@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import OtpCode,User
 from django.contrib.auth import password_validation
 from django.contrib.auth import get_user_model
+from orders.serializer import AddressSerializers
+from orders.models import Address
 
 
 
@@ -27,6 +29,8 @@ class UserRegisterVerifyCode(serializers.ModelSerializer):
 		fields = ('code',)
 
 class UserSerializer(serializers.ModelSerializer):
+	address = AddressSerializers(source='uaddress', many=True, read_only=True)
 	class Meta:
 		model = User
 		fields = "__all__"
+

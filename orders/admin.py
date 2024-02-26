@@ -19,7 +19,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = [get_user_model,"created_at","updated_at"]
+    list_display = [get_user_model(),"created_at","updated_at"]
     list_filter = ('created_at',"state","city")
     ordering = ('created_at',)
 

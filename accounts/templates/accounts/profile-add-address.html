@@ -13,19 +13,17 @@
                 <form action="" method="post" novalidate>
                     {% csrf_token %}
                     <div class="form-row-title">
-                        <h3>استان</h3>
+                        <h3>استان و شهر</h3>
                     </div>
                     <div class="form-row">
-                        <input type="text" class="input-ui pr-2" id="state" name="state" placeholder="استان خود را وارد کنید">
+                        <div class="ir-select w-100">
+                            <select class="ir-province input-ui pr-2 mb-2" id="state"></select>
+                            <select class="ir-city input-ui pr-2" id="city"></select>
+
+                        </div>
                     </div>
                     <div class="form-row-title">
-                        <h3>شهر</h3>
-                    </div>
-                    <div class="form-row">
-                        <input type="text" id="city" class="input-ui pr-2" name="city" placeholder="شهر خود را وارد کنید">
-                    </div>
-                    <div class="form-row-title">
-                        <h3>خیابان</h3>
+                        <h3>آدرس</h3>
                     </div>
                     <div class="form-row">
                         <input type="text" id="street" class="input-ui pr-2" name="street" placeholder="خیابان خود را وارد کنید">

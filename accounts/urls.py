@@ -7,6 +7,7 @@ urlpatterns = [
     path('verify/',views.UserVerifyCodeView.as_view(),name="accounts-verify-template"),
     path('login/',views.UserLoginCodeView.as_view(),name="accounts-login-template"),
     path('address/create/',views.UserAddAddress.as_view(),name="accounts-add-address"),
+    path("profile/",views.UserProfileTemplateView.as_view(),name="accounts-profile-template"),
     #api 
     path('api/register/', views.UserRegister.as_view(), name='user-register'),
     path('api/verify-code/', views.UserVerifyCode.as_view(), name='user-verify-code'),

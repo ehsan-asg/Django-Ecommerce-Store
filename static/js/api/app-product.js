@@ -4,7 +4,6 @@ const options_color = document.querySelector(".product-variants")
 const title_descriptions = document.querySelector(".product-title h1.text-title")
 const descriptions = document.querySelector(".description-product .container p")
 const button_add_cart = document.querySelector(".btn-primary-cm ")
-console.log(descriptions)
 
 function getCategorySlugFromURL() {
     const pathname = window.location.pathname;
@@ -59,7 +58,7 @@ function fetchProductData(product_slug) {
             console.error('There was a problem with the fetch operation:', error);
         });
   }
-  function updatePrice(box) {
+function updatePrice(box) {
     const lis = document.querySelectorAll('.product-variants li');
     lis.forEach(li => {
         li.querySelector('.ui-variant--check').classList.remove('active-label');
@@ -91,14 +90,18 @@ function addToCart(product_slug, feature_id) {
                     feature_id: feature_data.id
                 };
             });
+
             const cartItem = {
                 id: data.id,
                 name: data.name,
+                slug:data.slug,
                 image: data.image,
                 price: featureById[feature_id].price,
+                feature_name: featureById[feature_id].name,
                 feature_color: featureById[feature_id].value,
                 feature_data: feature_id,
-                quantity: 1
+                quantity: 1,
+                first_price:featureById[feature_id].price,
             };
 
             // Get existing cart items from localStorage
@@ -109,6 +112,7 @@ function addToCart(product_slug, feature_id) {
             if (existingCartItemIndex !== -1) {
                 // If the item already exists, increase its quantity
                 existingCartItems[existingCartItemIndex].quantity += 1;
+                existingCartItems[existingCartItemIndex].price = featureById[feature_id].price * existingCartItems[existingCartItemIndex].quantity;
             } else {
                 // If the item does not exist, add it to the cart
                 existingCartItems.push(cartItem);
@@ -133,6 +137,7 @@ function removeFromCart(index, feature_index) {
     if (existingCartItemIndex !== -1) {
         // Decrease the quantity of the item by 1
         existingCartItems[existingCartItemIndex].quantity -= 1;
+        existingCartItems[existingCartItemIndex].price= existingCartItems[existingCartItemIndex].quantity * existingCartItems[existingCartItemIndex].first_price
         
         // If the quantity becomes zero, remove the item from the cart
         if (existingCartItems[existingCartItemIndex].quantity <= 0) {
@@ -159,44 +164,51 @@ function displayCartItems() {
 
     // Retrieve cart items from localStorage
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
+    sum_item = 0
+    cartItems.forEach(cartItems_length=>{
+        sum_item += cartItems_length.quantity
+      })
     // Update the cart item count
-    document.getElementById('cart-item-count').textContent = cartItems.length + ' کالا';
-    if (cartItems.length > 0 ){
-    document.querySelector('.count').textContent = cartItems.length
-    document.querySelector('.count').style.display = "block"
+    document.getElementById('cart-item-count').textContent = sum_item + ' کالا';
+
+
+    if(sum_item > 0){
+        document.querySelector('.header-cart-info').style.display = "block"
+        document.querySelector('.count').textContent = sum_item
+        document.querySelector('.count').style.display = "block"
+        cartItems.forEach((item, index) => {
+            const newCartItem = document.createElement('li');
+            newCartItem.classList.add('cart-item');
+            newCartItem.innerHTML = `
+                <a href="#" class="header-basket-list-item">
+                    <div class="header-basket-list-item-image">
+                        <img src="${item.image}" alt="">
+                    </div>
+                    <div class="header-basket-list-item-content">
+                        <p class="header-basket-list-item-title">${item.name}</p>
+                        <div class="header-basket-list-item-footer">
+                            <div class="header-basket-list-item-props">
+                                <span class="header-basket-list-item-props-item">x ${item.quantity}</span>
+                                <span class="header-basket-list-item-props-item">
+                                    <div class="header-basket-list-item-color-badge" style="background:${item.feature_color}"></div>
+                                </span>
+                            </div>
+                            <button class="header-basket-list-item-remove" data-index="${item.id}" data-feature="${item.feature_data}"  onclick="removeFromCart(${item.id},${item.feature_data})">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            `;
+        
+            cartItemsList.appendChild(newCartItem);
+            totalAmount += item.price;
+        });
     }else{
-        ocument.querySelector('.count').style.display = "none"
+        document.querySelector('.header-cart-info').style.display = "none"
+        document.querySelector('.count').style.display = "none"
     }
 
-    // Populate the cart items list
-    cartItems.forEach((item, index) => {
-        const newCartItem = document.createElement('li');
-        newCartItem.classList.add('cart-item');
-        newCartItem.innerHTML = `
-            <a href="#" class="header-basket-list-item">
-                <div class="header-basket-list-item-image">
-                    <img src="${item.image}" alt="">
-                </div>
-                <div class="header-basket-list-item-content">
-                    <p class="header-basket-list-item-title">${item.name}</p>
-                    <div class="header-basket-list-item-footer">
-                        <div class="header-basket-list-item-props">
-                            <span class="header-basket-list-item-props-item">x ${item.quantity}</span>
-                            <span class="header-basket-list-item-props-item">
-                                <div class="header-basket-list-item-color-badge" style="background:${item.feature_color}"></div>
-                            </span>
-                        </div>
-                        <button class="header-basket-list-item-remove" data-index="${item.id}" data-feature="${item.feature_data}"  onclick="removeFromCart(${item.id},${item.feature_data})">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </a>
-        `;
-        cartItemsList.appendChild(newCartItem);
-        totalAmount += item.price;
-    });
 
     // Update the total amount
     cartTotalAmount.querySelector('.header-cart-info-total-amount-number').textContent = totalAmount.toLocaleString() + ' تومان';

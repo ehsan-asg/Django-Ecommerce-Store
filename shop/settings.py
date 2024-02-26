@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'colorfield',
     'sorl.thumbnail',
-    'galleryfield',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+
 
 ]
 
@@ -150,6 +150,9 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),

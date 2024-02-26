@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import Coupon,Order,OrderItem,Address
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+
 
 class CouponSerializers(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +19,11 @@ class OrderItemSerializers(serializers.ModelSerializer):
 class AddressSerializers(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = "__all__"
+        exclude = ['user']
+
+    def create(self, validated_data):
+        user_session = self.context['request'].session['user_registration_info']
+        user_instance = get_object_or_404(get_user_model(), phone_number=user_session['phone_number'])
+        address_instance = Address.objects.create(user=user_instance, **validated_data)
+        
+        return address_instance
