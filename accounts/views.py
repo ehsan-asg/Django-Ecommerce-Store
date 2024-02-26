@@ -13,6 +13,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 #Template
 class UserAddAddress(View):
     template_name = 'accounts/register.html'
@@ -58,8 +60,21 @@ class UserVerifyCode(APIView):
         return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserAllView(APIView):
+    permission_classes = [IsAuthenticated,]
     serializer_class = UserSerializer
     def get(self, request):
         serializer = self.serializer_class(User.objects.all(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class UserDetailView(APIView):
+      permission_classes = [IsAuthenticated,]
+      serializer_class = UserSerializer
+      def get(self,request):
+          user = get_object_or_404(User,phone_number=request.user.phone_number)
+          serializer = self.serializer_class(user)
+          return Response(serializer.data)
+class UserLogoutView(LoginRequiredMixin, View):
+	def get(self, request):
+		logout(request)
+		messages.success(request, 'you logged out successfully', 'success')
+		return redirect('shop:home')
