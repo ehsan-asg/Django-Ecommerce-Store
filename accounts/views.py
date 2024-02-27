@@ -16,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 #Template
-class UserAddAddress(View):
+class UserAddAddress(TemplateView):
     template_name = 'accounts/register.html'
 class UserRegisterView(TemplateView):
     template_name = 'accounts/register.html'
@@ -75,7 +75,6 @@ class UserDetailView(APIView):
           return Response(serializer.data)
 class UserLogoutView(LoginRequiredMixin, View):
     def get(self, request):
-        logout(request)
-        del request.session['tokens']        
+        logout(request)      
         messages.success(request, 'شما با موفقیت خارج شدید.', 'success')
         return redirect('shop:home')
