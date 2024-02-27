@@ -74,7 +74,8 @@ class UserDetailView(APIView):
           serializer = self.serializer_class(user)
           return Response(serializer.data)
 class UserLogoutView(LoginRequiredMixin, View):
-	def get(self, request):
-		logout(request)
-		messages.success(request, 'you logged out successfully', 'success')
-		return redirect('shop:home')
+    def get(self, request):
+        logout(request)
+        del request.session['tokens']        
+        messages.success(request, 'شما با موفقیت خارج شدید.', 'success')
+        return redirect('shop:home')
