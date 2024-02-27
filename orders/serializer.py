@@ -17,9 +17,18 @@ class OrderItemSerializers(serializers.ModelSerializer):
         model = OrderItem
         fields = "__all__"
 class AddressSerializers(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
     class Meta:
         model = Address
-        exclude = ['user']
+        fields = "__all__"
+
+    def get_user(self, obj):
+        user_instance = obj.user
+        user_data = {
+            'full_name': user_instance.full_name,
+            'phone_number': user_instance.phone_number,
+        }
+        return user_data
 
     def create(self, validated_data):
         user_session = self.context['request'].session['user_registration_info']
