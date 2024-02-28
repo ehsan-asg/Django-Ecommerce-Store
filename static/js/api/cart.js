@@ -4,6 +4,7 @@ function get_url_home(){
     main_url += "//"+window.location.host
     return main_url
 }
+
 function getCategorySlugFromURL() {
     const pathname = window.location.pathname;
     const parts = pathname.split('/');
@@ -64,7 +65,7 @@ function displayCartProductItems() {
                 <td><strong>${formatPrice(item.price)}</strong></td>
             `;
             cartTableBody.appendChild(row);
-            totalAmount += item.price * item.quantity;
+            totalAmount += item.price;
             console.log(totalAmount)
             document.getElementById("price-bill-product").textContent = `مبلغ کل (${sum_item} کالا)‍`
 
@@ -123,6 +124,8 @@ function removeCartItem(index) {
 function formatPrice(price) {
     return price.toLocaleString() + ' تومان';
 }
+
+
 window.addEventListener('DOMContentLoaded', displayCartProductItems);
 
 
