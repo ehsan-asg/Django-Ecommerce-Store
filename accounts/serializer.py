@@ -33,8 +33,3 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		fields = "__all__"
-
-class UserSerializerAddress(serializers.ModelSerializer):
-	class Meta:
-		model = get_user_model()
-		fields = "__all__"

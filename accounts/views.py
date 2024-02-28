@@ -29,6 +29,9 @@ class UserLoginCodeView(TemplateView):
 
 class UserProfileTemplateView(TemplateView):
     template_name = 'accounts/profile.html'
+class UserProfileAddressView(View):
+    def get(self,request):
+        return render(request,"accounts/profile-addresses.html")
 
 #Api
 class UserRegister(APIView):

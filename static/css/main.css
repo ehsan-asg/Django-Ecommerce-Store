@@ -5700,16 +5700,15 @@ input[type=number]::-webkit-outer-spin-button {
     outline: none;
 }
 
-.checkout-address-btn-submit:hover {
-    background-color: #F0F0F0;
-}
 
 .checkout-address-box.is-selected .checkout-address-btn-submit {
-    background-color: #f7858d;
     border-top-color: #e0eff0;
-    color: #fff;
+    color: #000;
 }
-
+.is-select{
+    background-color: #f7858d;
+    color: #fff !important;
+}
 .checkout-address-cancel {
     color: #8d8d8d;
     position: absolute;

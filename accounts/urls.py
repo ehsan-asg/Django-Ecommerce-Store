@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout/',views.UserLogoutView.as_view(),name="accounts-logout"),
     path('address/create/',views.UserAddAddress.as_view(),name="accounts-add-address"),
     path("profile/",views.UserProfileTemplateView.as_view(),name="accounts-profile-template"),
+    path("profile/address/",views.UserProfileAddressView.as_view(),name="accounts-profile-address"),
     #api 
     path('api/register/', views.UserRegister.as_view(), name='user-register'),
     path('api/verify-code/', views.UserVerifyCode.as_view(), name='user-verify-code'),

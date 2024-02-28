@@ -14,10 +14,9 @@ class ShoppingTemplateView(TemplateView):
 #api
 class AddressDetailApiView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         user = get_object_or_404(get_user_model(), phone_number=request.user.phone_number)
-        addresses = Address.objects.filter(user=user)
+        addresses = Address.objects.filter(user=user,deleted=False)
         serializer = AddressSerializers(addresses, many=True)
         return Response(serializer.data)
 
@@ -29,3 +28,9 @@ class AddressCreateApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class AddressDeleteApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self, request, pk):
+        address = Address.objects.get(pk=pk)
+        address.delete()
+        return Response({'message': 'Address deleted'}, status=status.HTTP_200_OK)
