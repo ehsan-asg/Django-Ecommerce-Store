@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#f7858d">
     <meta name="msapplication-navbutton-color" content="#f7858d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
-    <title>didikala | Shopping-peyment Page</title>
+    <title>Shopping-peyment Page</title>
     <!-- Font Icon -->
     <link rel="stylesheet" href="{% static 'css/vendor/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendor/materialdesignicons.min.css' %}">
@@ -72,7 +72,7 @@
                             <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 px-res-1">
                                 <h2>انتخاب شیوه پرداخت</h2>
                             </div>
-                            <form method="post" id="shipping-data-form" class="dt-sn dt-sn--box pt-3 pb-3 mb-4">
+                            <form action="" method="get" id="shipping-data-form" class="dt-sn dt-sn--box pt-3 pb-3 mb-4">
                                 <div class="checkout-pack">
                                     <div class="row">
                                         <div class="checkout-time-table checkout-time-table-time">
@@ -86,12 +86,8 @@
                                                         <div class="content-box">
                                                             <div
                                                                 class="checkout-time-table-title-bar checkout-time-table-title-bar-city">
-                                                                پرداخت اینترنتی هوشمند دیجی‌کالا
-                                                                <span class="help-sn" data-toggle="tooltip"
-                                                                    data-html="true" data-placement="bottom"
-                                                                    title="<div class='help-container is-left'><div class='help-arrow'></div><p class='help-text'>با پرداخت اینترنتی، سفارش شما با اولویت بیشتری نسبت به پرداخت در محل پردازش و ارسال می شود. در صورت پرداخت ناموفق هزینه کسر شده حداکثر طی ۷۲ ساعت به حساب شما بازگردانده می‌شود.</p></div>">
-                                                                    <span class="mdi mdi-information-outline"></span>
-                                                                </span>
+                                                                پرداخت اینترنتی هوشمند 
+
                                                             </div>
                                                             <ul class="checkout-time-table-subtitle-bar">
                                                                 <li>
@@ -112,7 +108,7 @@
                                                         <div class="content-box">
                                                             <div
                                                                 class="checkout-time-table-title-bar checkout-time-table-title-bar-city">
-                                                                پرداخت اعتباری دیجی‌پی
+پرداخت در محل
                                                             </div>
                                                         </div>
                                                     </label>
@@ -145,7 +141,7 @@
                                                                 class="checkout-order-summary-col checkout-order-summary-col-how-to-send">
                                                                 <span class="dl-none-sm">نحوه ارسال</span>
                                                                 <span class="dl-none-sm">
-                                                                    پست پیشتاز با ظرفیت اختصاصی برای دیجی کالا
+اداره پست
                                                                 </span>
                                                             </div>
                                                             <div
@@ -159,7 +155,7 @@
                                                                 class="checkout-order-summary-col checkout-order-summary-col-shipping-cost">
                                                                 <span>هزینه ارسال</span>
                                                                 <span class="fs-sm">
-                                                                    رایگان
+                                                                    وابسته به آدرس
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -173,30 +169,6 @@
                                                 <div class="card-body">
                                                     <div class="box">
                                                         <div class="row">
-                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                                                                <div class="product-box-container">
-                                                                    <div class="product-box product-box-compact">
-                                                                        <a class="product-box-img">
-                                                                            <img src="./assets/img/cart/01.jpg">
-                                                                        </a>
-                                                                        <div class="product-box-title">
-                                                                            تیشرت مردانه
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                                                                <div class="product-box-container">
-                                                                    <div class="product-box product-box-compact">
-                                                                        <a class="product-box-img">
-                                                                            <img src="./assets/img/cart/02.jpg">
-                                                                        </a>
-                                                                        <div class="product-box-title">
-                                                                            کت مردانه
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -213,25 +185,23 @@
                                                 <span class="help-sn" data-toggle="tooltip" data-html="true"
                                                     data-placement="bottom"
                                                     title="<div class='help-container is-left'><div class='help-arrow'></div><p class='help-text'>بعد از نهایی شدن سفارش کد تخفیف را ثبت نمایید. بعد از ثبت کد تخفیف امکان بازگشت و یا تغییر سبد وجود نخواهد داشت. در صورت تغییر سفارش، کد تخفیف از بین خواهد رفت و امکان اعمال مجدد آن وجود ندارد</p></div>">
-                                                    <span class="mdi mdi-information-outline"></span>
                                                 </span>
                                             </h2>
                                         </div>
                                         <p>با ثبت کد تخفیف، مبلغ کد تخفیف از “مبلغ قابل پرداخت” کسر می‌شود.</p>
                                         <div class="form-ui">
-                                            <form action="">
                                                 <div class="row text-center">
                                                     <div class="col-xl-8 col-lg-12 px-0">
                                                         <div class="form-row">
-                                                            <input type="text" class="input-ui pr-2"
-                                                                placeholder="مثلا 837A2CS">
+                                                            <input type="text" id="code-coupon" class="input-ui pr-2"
+                                                                placeholder="مثلا 837A2CS" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-4 col-lg-12 px-0">
-                                                        <button class="btn btn-primary mt-res-1">ثبت کد تخفیف</button>
+                                                        <button id="button-coupon" class="btn btn-primary mt-res-1">ثبت کد تخفیف</button>
                                                     </div>
                                                 </div>
-                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -242,14 +212,14 @@
                         <div class="dt-sn dt-sn--box border mb-2">
                             <ul class="checkout-summary-summary">
                                 <li>
-                                    <span>مبلغ کل (۲ کالا)</span><span>۱۶,۸۹۷,۰۰۰ تومان</span>
+                                    <span>مبلغ کل (۲ کالا)</span><span class="price-all">۱۶,۸۹۷,۰۰۰ تومان</span>
                                 </li>
                                 <li>
                                     <span>هزینه ارسال<span class="help-sn" data-toggle="tooltip" data-html="true"
                                             data-placement="bottom"
-                                            title="<div class='help-container is-right'><div class='help-arrow'></div><p class='help-text'>هزینه ارسال مرسولات می‌تواند وابسته به شهر و آدرس گیرنده متفاوت باشد. در صورتی که هر یک از مرسولات حداقل ارزشی برابر با ۱۵۰هزار تومان داشته باشد، آن مرسوله بصورت رایگان ارسال می‌شود.<br>'حداقل ارزش هر مرسوله برای ارسال رایگان، می تواند متغیر باشد.'</p></div>">
+                                            title="<div class='help-container is-right'><div class='help-arrow'></div><p class='help-text'>هزینه ارسال مرسولات می‌تواند وابسته به شهر و آدرس گیرنده متفاوت باشد. در صورتی که هر یک از مرسولات حداقل ارزشی برابر با ۱۵۰هزار تومان داشته باشد، آن مرسوله بصورت وابسته به آدرس ارسال می‌شود.<br>'حداقل ارزش هر مرسوله برای ارسال وابسته به آدرس، می تواند متغیر باشد.'</p></div>">
                                             <span class="mdi mdi-information-outline"></span>
-                                        </span></span><span>رایگان</span>
+                                        </span></span><span>وابسته به آدرس</span>
                                 </li>
                             </ul>
                             <div class="checkout-summary-devider">
@@ -259,7 +229,6 @@
                                 <div class="checkout-summary-price-title">مبلغ قابل پرداخت:</div>
                                 <div class="checkout-summary-price-value">
                                     <span class="checkout-summary-price-value-amount">۱۶,۶۹۷,۰۰۰</span>
-                                    تومان
                                 </div>
                                 <a href="#" class="mb-2 d-block">
                                     <button class="btn-primary-cm btn-with-icon w-100 text-center pr-0 pl-0">
@@ -334,6 +303,7 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/api/shopping.js' %}"></script>
     <script src="{% static 'js/form/address.js' %}"></script>
+    <script src="{% static 'js/api/payment.js' %}"></script>
 </body>
 
 </html>

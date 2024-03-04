@@ -78,17 +78,13 @@ if (window.location.href === get_url_home() + "/accounts/login/") {
         }
     });
 }else if(window.location.href === get_url_home() + "/accounts/register/"){
-    authenticat(function(success) {
-        if (success) {
-            window.location.replace(get_url_home() + "/accounts/profile");
-        }
-    });
-}else if(window.location.href === get_url_home() + "/accounts/verify/"){
-    authenticat(function(success) {
-        if (success) {
-            window.location.replace(get_url_home() + "/accounts/profile");
-        }
-    });
+    if (storedTokens){
+        authenticat(function(success) {
+            if (success) {
+                window.location.replace(get_url_home() + "/accounts/profile");
+            }
+        });
+    }
 }else if(window.location.href === get_url_home() + "/accounts/login/?next=/accounts/logout/"){
     localStorage.removeItem("tokens");
     localStorage.removeItem("user_data");

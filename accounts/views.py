@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 #Template
 class UserAddAddress(TemplateView):
-    template_name = 'accounts/register.html'
+    template_name = 'accounts/profile-add-address.html'
 class UserRegisterView(TemplateView):
     template_name = 'accounts/register.html'
 

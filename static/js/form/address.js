@@ -141,7 +141,7 @@ if (window.location.href === get_url_home() + "/shopping/") {
         const activeButton = document.querySelector(".checkout-address-btn-submit.is-select");
         if (activeButton !== null) {
             activeButton.classList.remove("is-select");
-            activeButton.textContent = "سفارش به این آدرس ارسال می‌شود";
+            activeButton.textContent = "آدرس";
         }
         button.classList.add("is-select");
         button.textContent = "سفارش به این آدرس ارسال می شود"
