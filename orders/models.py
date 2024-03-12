@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
-from product.models import Product
+from product.models import Product,Feature
 from core.models import BaseModel
 
 class Coupon(BaseModel):
@@ -34,6 +34,7 @@ class Order(BaseModel):
 class OrderItem(BaseModel):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	Feature = models.ForeignKey(Feature,on_delete=models.CASCADE,null=True,blank=True)
 	price = models.IntegerField()
 	quantity = models.IntegerField(default=1)
 

@@ -81,3 +81,6 @@ class UserLogoutView(LoginRequiredMixin, View):
         logout(request)      
         messages.success(request, 'شما با موفقیت خارج شدید.', 'success')
         return redirect('shop:home')
+class UserProfileOrder(LoginRequiredMixin, View):
+    def get(self,request):
+        pass

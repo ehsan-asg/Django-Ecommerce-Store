@@ -1,15 +1,9 @@
-function get_url_home() {
-    let main_url = window.location.protocol;
-    main_url += "//" + window.location.host;
-    return main_url;
-}
 function getCategorySlugFromURL() {
     const pathname = window.location.pathname;
     const parts = pathname.split('/');
     const categorySlug = parts[parts.length - 2]; 
     return categorySlug;
 }
-const storedTokens = localStorage.getItem('tokens'); 
 function authenticat(callback) {
     if (storedTokens) {
         const tokens = JSON.parse(storedTokens);
@@ -71,6 +65,7 @@ function getCategorySlugFromURL() {
     const categorySlug = parts[parts.length - 2]; 
     return categorySlug;
 }
+console.log(getCategorySlugFromURL())
 if (window.location.href === get_url_home() + "/accounts/login/") {
     authenticat(function(success) {
         if (success) {
@@ -94,6 +89,12 @@ if (window.location.href === get_url_home() + "/accounts/login/") {
     authenticat(function(success) {
         if (!success) {
             window.location.replace(get_url_home() + "/accounts/login");
+        }
+    });
+}else if(getCategorySlugFromURL() === "complete-order"){
+    authenticat(function(success) {
+        if (!success) {
+            window.location.replace(get_url_home());
         }
     });
 }
