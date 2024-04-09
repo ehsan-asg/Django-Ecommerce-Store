@@ -1,86 +1,84 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.auth import views as auth_views
+from django.views.generic.edit import FormView
+from accounts.forms import AuthenticationForm,SetPasswordForm
+from accounts.models import User
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+
+
+
+class LoginView(auth_views.LoginView):
+    template_name = "accounts/login.html"
+    form_class = AuthenticationForm
+    redirect_authenticated_user = True
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.core.mail import send_mail
 from django.views import View
+from .forms import UserRegistrationForm
 import random
-from rest_framework.permissions import IsAuthenticated
-from utils import send_otp_code
-from .models import OtpCode,User
-from django.views.generic import TemplateView
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework.response import Response
-from .serializer import UserRegisterSerializers,UserRegisterVerifyCode,UserSerializer
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
-#Template
-class UserAddAddress(TemplateView):
-    template_name = 'accounts/profile-add-address.html'
-class UserRegisterView(TemplateView):
-    template_name = 'accounts/register.html'
 
-class UserVerifyCodeView(TemplateView):
-    template_name = 'accounts/verify-code.html'
-
-class UserLoginCodeView(TemplateView):
-    template_name = 'accounts/login.html'
-
-class UserProfileTemplateView(TemplateView):
-    template_name = 'accounts/profile.html'
-class UserProfileAddressView(View):
-    def get(self,request):
-        return render(request,"accounts/profile-addresses.html")
-
-#Api
-class UserRegister(APIView):
-    
-    def post(self,request):
-        random_code = random.randint(1000, 9999)
-        ser_data = UserRegisterSerializers(data=request.POST)
-        if ser_data.is_valid():
-            send_otp_code(ser_data.validated_data['phone_number'],random_code)
-            OtpCode.objects.create(phone_number=ser_data.validated_data['phone_number'], code=random_code)
-            request.session['user_registration_info'] = {
-				'phone_number': ser_data.data['phone_number'],
-				'full_name': ser_data.data['full_name'],
-				'password': ser_data.data['password'],
-			}
-            return Response({'user':ser_data.data,'otp_code': random_code}, status=status.HTTP_201_CREATED)
-        return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class UserVerifyCode(APIView):
-    def post(self,request):
-        ser_data = UserRegisterVerifyCode(data=request.data)
-        if ser_data.is_valid():
-            user_session = request.session['user_registration_info']
-            code_instance = OtpCode.objects.get(phone_number=user_session['phone_number'])
-            if ser_data.data['code'] == code_instance.code:
-                User.objects.create_user(user_session['phone_number'],user_session['full_name'], user_session['password'])
-                OtpCode.objects.filter(phone_number=user_session['phone_number']).delete()
-                return Response({'message': 'Thanks for signing up. Your account has been created.'}, status=status.HTTP_201_CREATED)
-        return Response(ser_data.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class UserAllView(APIView):
-    permission_classes = [IsAuthenticated,]
-    serializer_class = UserSerializer
+class UserRegistrationView(View):
     def get(self, request):
-        serializer = self.serializer_class(User.objects.all(), many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        form = UserRegistrationForm()
+        return render(request, 'registration/register.html', {'form': form})
 
-class UserDetailView(APIView):
-      permission_classes = [IsAuthenticated,]
-      serializer_class = UserSerializer
-      def get(self,request):
-          user = get_object_or_404(User,phone_number=request.user.phone_number)
-          serializer = self.serializer_class(user)
-          return Response(serializer.data)
-class UserLogoutView(LoginRequiredMixin, View):
-    def get(self, request):
-        logout(request)      
-        messages.success(request, 'شما با موفقیت خارج شدید.', 'success')
-        return redirect('shop:home')
-class UserProfileOrder(LoginRequiredMixin, View):
-    def get(self,request):
-        pass
+    def post(self, request):
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            # Generate OTP
+            otp_code = random.randint(100000, 999999)
+
+            # Save user but don't activate yet
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.is_active = False
+            user.save()
+
+            # Send OTP to user via email
+            send_mail(
+                'Your OTP Code',
+                f'Your OTP code is: {otp_code}',
+                'from@example.com',
+                [email],
+                fail_silently=False,
+            )
+
+            # Redirect to OTP verification page
+            return redirect('otp_verification', username=username)
+
+        return render(request, 'registration/register.html', {'form': form})
+
+class OTPVerificationView(View):
+    def get(self, request, username):
+        return render(request, 'registration/otp_verification.html', {'username': username})
+
+    def post(self, request, username):
+        otp_code = request.POST.get('otp_code')
+        if otp_code:
+            # Check if OTP is correct
+            if otp_code == request.session.get('otp_code'):
+                # Activate user
+                user = User.objects.get(username=username)
+                user.is_active = True
+                user.save()
+
+                # Log the user in
+                user = authenticate(username=username)
+                login(request, user)
+
+                return redirect('home')  # Redirect to home page after successful login
+
+        return render(request, 'registration/otp_verification.html', {'username': username})
+
+class LoginView(auth_views.LoginView):
+    template_name = "accounts/login.html"
+    form_class = AuthenticationForm
+    redirect_authenticated_user = True      
+class LogoutView(auth_views.LogoutView):
+    pass

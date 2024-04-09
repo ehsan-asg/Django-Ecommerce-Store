@@ -1,35 +1,83 @@
 from django.contrib import admin
-from .models import User,OtpCode
-from orders.models import Address
-from .forms import UserCreationForm,UserChangeForm
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin
+from .models import Profile
+from django.contrib.auth import get_user_model
 
-@admin.register(OtpCode)
-class OtpCodeAdmin(admin.ModelAdmin):
-    list_display = ['phone_number','code','created_at']
-class UserAddressAdmin(admin.TabularInline):
-      model = Address
-class UserAdmin(BaseUserAdmin):
-    form = UserChangeForm
-    add_form = UserCreationForm
+User = get_user_model()
 
-    list_display = ('full_name','phone_number','role')
-    list_filter = ('role','created_at')
-    readonly_fields = ('last_login',)
 
+class CustomUserAdmin(UserAdmin):
+    """
+    Custom admin panel for user management with add and change forms plus password
+    """
+
+    model = User
+    list_display = ("id","email", "is_superuser", "is_active", "is_verified")
+    list_filter = ("email", "is_superuser", "is_active", "is_verified")
+    searching_fields = ("email",)
+    ordering = ("email",)
     fieldsets = (
-		('Main', {'fields':( 'phone_number', 'email','full_name','role','image_profile','password')}),
-		('Permissions', {'fields':('is_active', 'is_admin', 'is_superuser', 'last_login', 'groups', 'user_permissions')}),
-	)
-
+        (
+            "Authentication",
+            {
+                "fields": ("email", "password"),
+            },
+        ),
+        (
+            "permissions",
+            {
+                "fields": (
+                    "is_staff",
+                    "is_active",
+                    "is_superuser",
+                    "is_verified",
+                ),
+            },
+        ),
+        (
+            "group permissions",
+            {
+                "fields": ("groups", "user_permissions","type"),
+            },
+        ),
+        (
+            "important date",
+            {
+                "fields": ("last_login",),
+            },
+        ),
+    )
     add_fieldsets = (
-		("Add User", {'fields':('phone_number', 'email','full_name','role','image_profile','password')}),
-	)
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_active",
+                    "is_superuser",
+                    "is_verified",
+                    "type"
+                ),
+            },
+        ),
+    )
 
-    search_fields = ('email', 'phone_number','full_name')
-    ordering = ('created_at',)
-    filter_horizontal = ('groups', 'user_permissions')
-    inlines = [UserAddressAdmin]
+class CustomProfileAdmin(admin.ModelAdmin):
+    list_display = ("id","user", "first_name","last_name","phone_number")
+    searching_fields = ("user","first_name","last_name","phone_number")
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(Profile,CustomProfileAdmin)
+admin.site.register(User, CustomUserAdmin)
+
+from django.contrib.sessions.models import Session
+class SessionAdmin(admin.ModelAdmin):
+    def _session_data(self, obj):
+        return obj.get_decoded()
+    list_display = ['session_key', '_session_data', 'expire_date']
+    readonly_fields = ['_session_data']
+admin.site.register(Session, SessionAdmin)
