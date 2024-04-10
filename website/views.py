@@ -5,8 +5,8 @@ from .forms import ContactForm, NewsLetterForm
 from django.contrib import messages
 from django.views.generic import CreateView
 from django.shortcuts import redirect
-# Create your views here.
 
+# Create your views here.
 class IndexView(TemplateView):
     template_name = "website/index.html" 
 
