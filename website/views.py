@@ -5,12 +5,19 @@ from .forms import ContactForm, NewsLetterForm
 from django.contrib import messages
 from django.views.generic import CreateView
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
-# Create your views here.
 class IndexView(TemplateView):
-    template_name = "website/index.html" 
+    template_name = "website/index.html"
+    @method_decorator(cache_page(60 * 30))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ContactView(TemplateView):
+    @method_decorator(cache_page(60 * 30))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
     template_name = "website/contact.html" 
     
 class AboutView(TemplateView):
