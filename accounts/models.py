@@ -7,6 +7,9 @@ from django.db import models
 from django.core.validators import RegexValidator
 from accounts.validators import validate_iranian_cellphone_number
 from .managers import UserManager
+from django.conf import settings
+import redis
+
 
 
 class UserType(models.IntegerChoices):
@@ -41,9 +44,6 @@ class OtpCode(models.Model):
 	code = models.PositiveSmallIntegerField(null=False)
 	created = models.DateTimeField(auto_now=True)
 
-	def __str__(self):
-		return f'{self.email} - {self.code} - {self.created}'
-
 class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE,related_name="user_profile")
     first_name = models.CharField(max_length=255)
@@ -62,4 +62,3 @@ class Profile(models.Model):
 def create_profile(sender,instance,created,**kwargs):
     if created:
         Profile.objects.create(user=instance, pk=instance.pk)
-        

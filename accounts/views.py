@@ -1,4 +1,5 @@
 from django.contrib.auth import views as auth_views
+from django.http.response import HttpResponse as HttpResponse
 from django.views.generic.edit import FormView
 from accounts.forms import AuthenticationForm,SignupForm,VerifyCodeForm
 from django.contrib.auth import get_user_model
@@ -11,8 +12,8 @@ from django.core.mail import send_mail
 from django.views import View
 from .models import OtpCode
 from django.contrib import messages
-from django.contrib.auth.views import PasswordResetView
-from django.contrib.messages.views import SuccessMessageMixin
+from django.core.cache import cache
+
 import random
 
 class LoginView(auth_views.LoginView):
@@ -20,12 +21,14 @@ class LoginView(auth_views.LoginView):
     form_class = AuthenticationForm
     redirect_authenticated_user = True
 
-
-
-
 class UserRegistrationView(FormView):
     template_name = 'accounts/register.html'
     form_class = SignupForm
+
+    def dispatch(self,request,*args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("website:index")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
@@ -72,7 +75,16 @@ class OTPVerificationView(View):
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     form_class = AuthenticationForm
-    redirect_authenticated_user = True      
+    redirect_authenticated_user = True
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        cache.clear()
+        return response      
 class LogoutView(auth_views.LogoutView):
-    pass
+    def dispatch(self, request, *args, **kwargs):
+        cache.clear()
+        return super().dispatch(request, *args, **kwargs)
+
+
+
 
