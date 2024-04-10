@@ -1,80 +1,73 @@
 from django.contrib.auth import views as auth_views
 from django.views.generic.edit import FormView
-from accounts.forms import AuthenticationForm,SetPasswordForm
-from accounts.models import User
+from accounts.forms import AuthenticationForm,SignupForm,VerifyCodeForm
+from django.contrib.auth import get_user_model
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.core.mail import send_mail
+from django.views import View
+from .models import OtpCode
+from django.contrib import messages
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
+import random
 
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     form_class = AuthenticationForm
     redirect_authenticated_user = True
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-from django.core.mail import send_mail
-from django.views import View
-from .forms import UserRegistrationForm
-import random
 
-class UserRegistrationView(View):
-    def get(self, request):
-        form = UserRegistrationForm()
-        return render(request, 'registration/register.html', {'form': form})
 
-    def post(self, request):
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
 
-            # Generate OTP
-            otp_code = random.randint(100000, 999999)
+class UserRegistrationView(FormView):
+    template_name = 'accounts/register.html'
+    form_class = SignupForm
 
-            # Save user but don't activate yet
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.is_active = False
-            user.save()
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
 
-            # Send OTP to user via email
-            send_mail(
-                'Your OTP Code',
-                f'Your OTP code is: {otp_code}',
-                'from@example.com',
-                [email],
-                fail_silently=False,
-            )
+        otp_code = random.randint(1000, 9999)
+        OtpCode.objects.create(email=form.cleaned_data['email'], code=otp_code)
+        self.request.session['otp_code'] = otp_code
+        self.request.session['email'] = email
+        self.request.session['password'] = password
 
-            # Redirect to OTP verification page
-            return redirect('otp_verification', username=username)
+        return redirect('accounts:verify')
 
-        return render(request, 'registration/register.html', {'form': form})
+
 
 class OTPVerificationView(View):
-    def get(self, request, username):
-        return render(request, 'registration/otp_verification.html', {'username': username})
+    template_name = 'accounts/verify.html'
+    form_class = VerifyCodeForm
 
-    def post(self, request, username):
-        otp_code = request.POST.get('otp_code')
-        if otp_code:
-            # Check if OTP is correct
-            if otp_code == request.session.get('otp_code'):
-                # Activate user
-                user = User.objects.get(username=username)
-                user.is_active = True
-                user.save()
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class})
 
-                # Log the user in
-                user = authenticate(username=username)
-                login(request, user)
+    def post(self, request):
+        otp_code = request.POST.get('code')
+        expected_otp_code = str(request.session.get('otp_code', ''))
+        email = request.session.get('email')
+        password = request.session.get('password')
 
-                return redirect('home')  # Redirect to home page after successful login
+        if otp_code == expected_otp_code:
+            user = get_user_model().objects.create_user(email=email, password=password)
+            user.is_active = True
+            user.is_verified = True
+            user.save()
 
-        return render(request, 'registration/otp_verification.html', {'username': username})
+            user = authenticate(username=email, password=password)
+            login(request, user)
+            OtpCode.objects.get(code=otp_code).delete()
+            return redirect('website:index')
+        else:
+            messages.error(request, 'کد وارد شده نادرست است.')
+            return render(request, self.template_name, {'form': self.form_class})
+
 
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
@@ -82,3 +75,4 @@ class LoginView(auth_views.LoginView):
     redirect_authenticated_user = True      
 class LogoutView(auth_views.LogoutView):
     pass
+
