@@ -29,9 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
 
 
 # Application definition
@@ -43,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'website',
     'dashboard',
     'accounts',
@@ -63,7 +59,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-SITE_ID = 1
 
 ROOT_URLCONF = 'A.urls'
 
@@ -92,8 +87,12 @@ WSGI_APPLICATION = 'A.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'projectshop', 
+        'USER': 'ehsan',
+        'PASSWORD': 'shopehsan',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
