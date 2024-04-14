@@ -15,15 +15,14 @@ class CartModel(models.Model):
         
     
 class CartItemModel(models.Model):
-    cart = models.ForeignKey(CartModel,on_delete=models.CASCADE,related_name="cart_items") 
-    product = models.ForeignKey('shop.ProductModel',on_delete=models.PROTECT)
+    cart = models.ForeignKey(CartModel, on_delete=models.CASCADE, related_name="cart_items") 
+    product = models.ForeignKey('shop.ProductModel', on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=0)
     
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.product.title} - {self.cart.id}"
-    
+        return f"{self.product.title} - {self.cart.id if self.cart else 'No Cart'}"
 
-    
+
