@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'website',
     'dashboard',
     'accounts',
@@ -115,15 +118,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# config redis
+
+
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB =  1
+REDIS_PASS = ""
+SECRET_KEY = 'x&1h_+h6#8x&*6r95z_@b($s5=5!91-gq^ym5d6m=kw#1b-+j*'
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
-        "OPTIONS":{
-           "CLIENT_class": "django_redis.client.DefaultClient"
-        },
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",  
+        "KEY_PREFIX": "shop",
+        "TIMEOUT": 60 * 15, 
+ 
     }
 }
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_COOKIE_AGE = 1209600
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -171,15 +186,6 @@ MY_SITE_PROTOCOL = 'http'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yourserver.com'
-EMAIL_USE_TLS = False
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'ehsan.1383asg63@yahoo.com'
-EMAIL_HOST_PASSWORD = 'ehsan0372663435'
-
 # django debug toolbar for docker usage
 SHOW_DEBUGGER_TOOLBAR = config("SHOW_DEBUGGER_TOOLBAR", cast=bool, default=True)
 if SHOW_DEBUGGER_TOOLBAR:
@@ -202,3 +208,18 @@ LOGOUT_REDIRECT_URL= '/'
 MERCHANT_ID = config("MERCHANT_ID",default="4ced0a1e-4ad8-4309-9668-3ea3ae8e8897")
 SANDBOX_MODE = config("SANDBOX_MODE", cast=bool, default=True)
 
+# REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+
+# Settings email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mkalhor81126@gmail.com'
+EMAIL_HOST_PASSWORD = 'egtp wuyg evxt ztrp'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
