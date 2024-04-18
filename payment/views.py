@@ -22,7 +22,6 @@ class PaymentVerifyView(View):
             int(payment_obj.amount), payment_obj.authority_id)
         ref_id = response["RefID"]
         status_code = response["Status"]
-
         payment_obj.ref_id = ref_id
         payment_obj.response_code = status_code
         payment_obj.status = PaymentStatusType.success.value if status_code in {
