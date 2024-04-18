@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Profile,OtpCode
+from .models import Profile
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -73,7 +73,6 @@ class CustomProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile,CustomProfileAdmin)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(OtpCode)
 
 from django.contrib.sessions.models import Session
 class SessionAdmin(admin.ModelAdmin):

@@ -8,7 +8,8 @@ from django.core.validators import RegexValidator
 from accounts.validators import validate_iranian_cellphone_number
 from .managers import UserManager
 from django.conf import settings
-import redis
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -39,10 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
-class OtpCode(models.Model):
-	email = models.EmailField(null=False)
-	code = models.PositiveSmallIntegerField(null=False)
-	created = models.DateTimeField(auto_now=True)
 
 class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE,related_name="user_profile")
