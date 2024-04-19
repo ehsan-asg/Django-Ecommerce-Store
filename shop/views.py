@@ -9,6 +9,15 @@ from django.core.exceptions import FieldError
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from review.models import ReviewModel,ReviewStatusType
+from rest_framework.views import APIView
+from .models import ProductModel
+from rest_framework.pagination import PageNumberPagination
+from .serializers import ProductSerializers
+from rest_framework.response import Response
+
+
+from rest_framework import status
+
 # Create your views here.
 
 
@@ -57,6 +66,7 @@ class ShopProductDetailView(DetailView):
         context["is_wished"] = WishlistProductModel.objects.filter(
             user=self.request.user, product__id=product.id).exists() if self.request.user.is_authenticated else False
         reviews = ReviewModel.objects.filter(product=product,status=ReviewStatusType.accepted.value)
+        context["object_id"] = product.id
         context["reviews"] = reviews
         total_reviews_count =reviews.count()
         context["reviews_count"] = {
@@ -92,3 +102,13 @@ class AddOrRemoveWishlistView(LoginRequiredMixin, View):
                 message = "محصول به لیست علایق اضافه شد"
 
         return JsonResponse({"message": message})
+
+class ProductSearchAPIView(APIView):
+    def get(self, request):
+        query = request.data.get('search')
+        if query:
+            products = ProductModel.objects.filter(title__icontains=query)
+            serializer = ProductSerializers(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "No search query provided"}, status=status.HTTP_400_BAD_REQUEST)
