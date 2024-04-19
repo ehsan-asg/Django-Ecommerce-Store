@@ -195,7 +195,7 @@
 <script>
     function changeProductQuantity(product_id,quantity){
         $.ajax({
-            url: "{%  url 'cart:session-update-product-quantity' %}",
+            url: "{%  url 'cart:change-quantity-product' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
@@ -216,17 +216,25 @@
     }
     function removeProduct(product_id){
         $.ajax({
-            url: "{%  url 'cart:session-remove-product' %}",
+            url: "{%  url 'cart:remove-cart-item' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
+                quantity:1,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
     
             },
             success: function (response) {
                 console.log(response);
                 window.location.reload();
-                // do something with the response data
+                Toastify({
+                        text:"محصول با موفقیت حذف شده",
+                        className: `info`,
+                        style: {
+                          background: "blue",
+                        }
+                      }).showToast();
+                    $(element).toggleClass('active');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -234,6 +242,7 @@
             }
         });
     }
+    
 </script>
 
 {% endblock %}

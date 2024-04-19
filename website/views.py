@@ -10,20 +10,19 @@ from django.views.decorators.cache import cache_page
 
 class IndexView(TemplateView):
     template_name = "website/index.html"
-    @method_decorator(cache_page(60 * 30))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+@method_decorator(cache_page(60 * 30), name='dispatch')
 class ContactView(TemplateView):
-    @method_decorator(cache_page(60 * 30))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     template_name = "website/contact.html" 
-    
+@method_decorator(cache_page(60 * 30), name='dispatch')    
 class AboutView(TemplateView):
     template_name = "website/about.html" 
     
-    
+@method_decorator(cache_page(60 * 30), name='dispatch')    
 class SendContactView(CreateView):
     """
     a class based view to show index page
@@ -45,7 +44,7 @@ class SendContactView(CreateView):
 
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER')
-    
+@method_decorator(cache_page(60 * 30), name='dispatch')  
 class NewsletterView(CreateView):
     http_method_names = ['post']
     form_class = NewsLetterForm

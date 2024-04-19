@@ -24,9 +24,12 @@
     <link rel="stylesheet" href="{% static 'css/theme.min.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/toastify/toastify.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     {% block extra_css %} {% endblock extra_css %}
 
     {% block extra_css_no_compress %} {% endblock extra_css_no_compress %}
+
 </head>
 
 
@@ -96,7 +99,6 @@
                             </button> -->
                             <a href="{% url 'cart:cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
                                 <i class="bi-basket"></i>
-                                <span class="cart-item-count" id="total-cart-item-count">{{cart.get_total_quantity}}</span>
                             </a>
                             <!-- End Shopping Cart -->
                             {% if request.user.is_authenticated %}
@@ -142,8 +144,6 @@
                             <img class="brand" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
                         </a>
                         <!-- End Logo -->
-
-                        <p class="text-muted small mb-0">&copy; Maryam Farajian 2023 Front RTL</p>
                     </div>
                 </div>
 
@@ -185,47 +185,6 @@
                                 شما</a></li>
                     </ul>
                     <!-- End List -->
-
-                    <!-- Button Group -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="footerSelectLanguage"
-                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
-                            <span class="d-flex align-items-center">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>انگلیسی (US)</span>
-                            </span>
-                        </button>
-
-                        <div class="dropdown-menu" aria-labelledby="footerSelectLanguage">
-                            <a class="dropdown-item d-flex align-items-center active" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/us.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>انگلیسی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/de.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>آلمانی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/es.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>اسپانیایی</span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <img class="avatar avatar-xss avatar-circle ms-2"
-                                    src="{% static 'vendor/flag-icon-css/flags/1x1/cn.svg' %}" alt="Image description"
-                                    width="16" />
-                                <span>چینی</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- End Button Group -->
                 </div>
                 <!-- End Col -->
             </div>
@@ -316,7 +275,6 @@
                     </div>
 
                     <div class="mb-7">
-                        <!-- Form -->
                         <form action="{% url 'shop:product-grid' %}">
                             <!-- Input Card -->
                             <div class="input-card">
@@ -328,7 +286,6 @@
                             </div>
                             <!-- End Input Card -->
                         </form>
-                        <!-- End Form -->
                     </div>
 
 
@@ -442,6 +399,10 @@
         </div>
     </div>
     <!-- ========== END SECONDARY CONTENTS ========== -->
+    <div id="custom-alert" class="custom-alert">
+    <span id="custom-alert-message"></span>
+</div>
+
     <!-- JS Jquery-->
     <script src="{% static 'js/jquery.min.js' %}"></script>
 
@@ -586,25 +547,34 @@
     <script>
         function addToCart(product_id) {
      
-            //console.log(product_id)
+            console.log(product_id)
             $.ajax({
-                url: "{%  url 'cart:session-add-product' %}",
+                url: "{%  url 'cart:add-cart-item' %}",
                 method: 'POST',
                 data: {
                     product_id: product_id,
+                    quantity: 1,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
         
                 },
                 success: function (response) {
                     $("#total-cart-item-count").html(response.total_quantity)
                     console.log(response);
-                    // do something with the response data
+                    Toastify({
+                        text:"محصول به سبد خرید افزوده شد",
+                        className: `info`,
+                        style: {
+                          background: "blue",
+                        }
+                      }).showToast();
+                    $(element).toggleClass('active');
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
                     // handle the error case
                 }
             });
+
         }
         function addToWishlist(element,product_id) {
      

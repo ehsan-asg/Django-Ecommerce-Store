@@ -31,10 +31,10 @@
                 </div>
 
                 <div class="input-group input-group-merge">
-                    <input type="password" class=" form-control form-control-lg text-center" name="password"
+                    <input type="password" id="inputpassword" class=" form-control form-control-lg text-center" name="password"
                         id="signupSimpleLoginPassword" placeholder="8+ characters required"
                         aria-label="8+ characters required" required>
-                    <a id="changePassTarget" class="input-group-append input-group-text" href="javascript:;">
+                    <a id="changePassTarget" class="input-group-append input-group-text" onclick="myFunction()" href="javascript:;">
                         <i id="changePassIcon" class="bi-eye"></i>
                     </a>
                 </div>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="text-center">
-                <p>حساب کاربری ندارید؟ <a class="link" href="./page-signup-simple.html">اینجا ثبت نام کنید</a></p>
+                <p>حساب کاربری ندارید؟ <a class="link" href="{% url 'accounts:register'%}">اینجا ثبت نام کنید</a></p>
             </div>
         </form>
 
@@ -62,8 +62,13 @@
 
 {% block extra_js %}
 <script>
-    // INITIALIZATION OF TOGGLE PASSWORD
-    // =======================================================
-    new HSTogglePassword('.js-toggle-password')
+    function myFunction() {
+      var x = document.getElementById("inputpassword");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
 </script>
 {% endblock extra_js %}

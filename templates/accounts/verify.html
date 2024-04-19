@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container content-space-3 content-space-t-lg-4 content-space-b-lg-3">
+    <div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
+        <!-- Heading -->
+        <div class="text-center mb-5 mb-md-7">
+            <h1 class="h2">تایید احراز هویت</h1>
+        </div>
+        <!-- End Heading -->
+
+        <!-- Form -->
+        <form  method="POST">
+            {% csrf_token %}
+            <!-- Form -->
+            {{ form }}
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-lg">ادامه</button>
+            </div>
+        </form>
+
+        <!-- End Form -->
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block extra_js %}
+<script>
+    function myFunction() {
+      var x = document.getElementById("inputpassword");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+</script>
+{% endblock extra_js %}
